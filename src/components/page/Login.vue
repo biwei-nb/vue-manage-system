@@ -26,7 +26,7 @@
                 </el-form-item>
                 <div class="login-btn">
                     <el-button type="primary" @click="submitForm()">登录</el-button>
-                    <p>{{err_message}}</p>
+                    <!-- <p>{{err_message}}</p> -->
                 </div>
             </el-form>
         </div>
@@ -68,7 +68,7 @@ export default {
                     //this.$loading.hide();
                 })
                 .then(err => {
-                    console.log(111111111)
+                    // console.log(111111111)
                     this.err_message = err.data.message;
                     console.log(err.data.message);
                     //this.$loading.hide();
