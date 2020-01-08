@@ -54,7 +54,16 @@ export default {
                 username: this.loginForm.username,
                 password: this.loginForm.password
             };
-            
+
+            this.$refs.login.validate(valid => {
+                if (valid) {
+                    alert('submit!');
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+
             this.$load.show();
             this.$http
                 .login(params)
