@@ -54,7 +54,7 @@ export default {
                 username: this.loginForm.username,
                 password: this.loginForm.password
             };
-
+            
             //this.$loading.show();
             this.$http
                 .login(params)
