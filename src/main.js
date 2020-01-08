@@ -9,8 +9,17 @@ import 'element-ui/lib/theme-chalk/index.css'; // 默认主题
 import './assets/css/icon.css';
 import './components/common/directives';
 import 'babel-polyfill';
+import auth from "./utils/auth"
+import http from "./utils/http"
+//import loading from "./utils/loading"
+//import message_ from "./utils/message"
 
 Vue.config.productionTip = false;
+Vue.prototype.$auth = auth;
+Vue.prototype.$http = http;
+//Vue.prototype.$loading = loading;
+//Vue.prototype.$message = message_;
+
 Vue.use(VueI18n);
 Vue.use(ElementUI, {
     size: 'small'
@@ -23,8 +32,9 @@ const i18n = new VueI18n({
 //使用钩子函数对路由进行权限跳转
 router.beforeEach((to, from, next) => {
     document.title = `${to.meta.title} | vue-manage-system`;
-    const role = localStorage.getItem('ms_username');
-    if (!role && to.path !== '/login') {
+    //const role = localStorage.getItem('ROLE');
+    const is_authed = auth.is_authed
+    if (!is_authed && to.path !== '/login') {
         next('/login');
     } else if (to.meta.permission) {
         // 如果是管理员权限则可进入，这里只是简单的模拟管理员权限而已
