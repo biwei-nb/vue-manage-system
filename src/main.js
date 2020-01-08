@@ -11,13 +11,13 @@ import './components/common/directives';
 import 'babel-polyfill';
 import auth from "./utils/auth"
 import http from "./utils/http"
-//import loading from "./utils/loading"
+import loading from "./utils/loading"
 //import message_ from "./utils/message"
 
 Vue.config.productionTip = false;
 Vue.prototype.$auth = auth;
 Vue.prototype.$http = http;
-//Vue.prototype.$loading = loading;
+Vue.prototype.$load = loading;
 //Vue.prototype.$message = message_;
 
 //Vue.use(VueI18n);

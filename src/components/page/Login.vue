@@ -55,7 +55,7 @@ export default {
                 password: this.loginForm.password
             };
             
-            //this.$loading.show();
+            this.$load.show();
             this.$http
                 .login(params)
                 .then(res => {
@@ -65,13 +65,13 @@ export default {
                     const user = data.user;
                     this.$auth.setUserToken(user, token);
                     this.$router.push('/');
-                    //this.$loading.hide();
+                    this.$load.hide();
                 })
                 .then(err => {
                     // console.log(111111111)
                     this.err_message = err.data.message;
                     console.log(err.data.message);
-                    //this.$loading.hide();
+                    this.$load.hide();
                 });
         }
     }
