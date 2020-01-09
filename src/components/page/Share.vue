@@ -11,7 +11,7 @@
             <div class="handle-box">
                 <el-input v-model="query.name" placeholder="名字" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
-                <el-button type="primary" icon="el-icon-plus" @click="addServerAttr">增加</el-button>
+                <el-button type="primary" icon="el-icon-plus" @click="addShare">增加</el-button>
             </div>
             <el-table
                 :data="tableData"
@@ -29,8 +29,10 @@
                     align="center"
                     :index="indexMethod"
                 ></el-table-column>
-                <el-table-column prop="name" label="名字"></el-table-column>
-                <el-table-column prop="update_time" label="更新时间"></el-table-column> 
+                <el-table-column prop="name" label="股票名字"></el-table-column>
+                <el-table-column prop="exchange_number" label="股票代码"></el-table-column>
+                <el-table-column prop="monitor_flag" label="监控标志"></el-table-column>
+                <el-table-column prop="exchange.name" label="交易所"></el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
                         <el-button
@@ -60,7 +62,7 @@
                         @size-change="handleSizeChange"
                         @current-change="handleCurrentChange"
                         :current-page.sync="pageIndex"
-                        :page-sizes="[5, 10, 20, 50]"
+                        :page-sizes="[50, 100, 200, 500]"
                         :page-size="pageSize"
                         layout="total, sizes, prev, pager, next"
                         :total="pageTotal"
@@ -83,8 +85,17 @@
         <!-- 编辑弹出框 -->
         <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
             <el-form ref="form" :model="form" label-width="90px">
-                <el-form-item label="名字">
+                <el-form-item label="股票名字">
                     <el-input v-model="form.name"></el-input>
+                </el-form-item>
+                <el-form-item label="股票代码">
+                    <el-input v-model="form.exchange_number"></el-input>
+                </el-form-item>
+                <el-form-item label="监控标志">
+                    <el-input v-model="form.exchange_number"></el-input>
+                </el-form-item>
+                <el-form-item label="交易所">
+                    <el-input v-model="form.exchange_number"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -110,7 +121,7 @@ export default {
             editVisible: false,
             pageTotal: 0,
             pageIndex: 1,
-            pageSize: 10,
+            pageSize: 100,
             form: {},
             idx: -1,
             id: -1
@@ -123,16 +134,15 @@ export default {
         // 获取 easy-mock 的模拟数据
         getData() {
             this.$http
-                .getServerAttrList(this.pageIndex, this.pageSize)
+                .getShareList(this.pageIndex, this.pageSize)
                 .then(res => {
-                    //console.log(res);
+                    console.log(res);
                     this.tableData = res.data.results;
                     this.pageTotal = res.data.count;
                 })
                 .catch(err => {
                     console.log(err);
                 });
-            
         },
         // 触发搜索按钮
         handleSearch() {
@@ -146,7 +156,7 @@ export default {
                 type: 'warning'
             })
                 .then(() => {
-                    this.$http.deleteServerAttr(row.nid);
+                    this.$http.deleteShare(row.nid);
                     this.$message.success('删除成功');
                     this.tableData.splice(index, 1);
                 })
@@ -179,7 +189,7 @@ export default {
                 //console.log('xiugai');
                 //console.log(this.idx, this.form)
                 this.$http
-                    .updateServerAttr(this.form.nid, this.form)
+                    .updateShare(this.form.nid, this.form)
                     .then(res => {
                         this.getData();
                         this.$message.success(`修改第 ${this.idx + 1} 行成功`);
@@ -188,7 +198,7 @@ export default {
             } else {
                 //console.log('chuangjian');
                 this.$http
-                    .addServerAttr(this.form)
+                    .addShare(this.form)
                     .then(res => {
                         this.getData();
                         this.$message.success('创建成功');
@@ -205,13 +215,13 @@ export default {
             this.pageSize = val;
             this.getData();
         },
-        addServerAttr() {
+        addShare() {
             //console.log("addExchange");
             this.editVisible = true;
             this.form = {};
         },
         indexMethod(index) {
-            return index + 1 + (this.pageIndex-1) * this.pageSize;
+            return index + 1 + (this.pageIndex - 1) * this.pageSize;
         }
     }
 };

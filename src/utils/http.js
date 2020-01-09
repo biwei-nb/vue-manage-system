@@ -170,6 +170,137 @@ class Http {
     const url = "/year_month/" + id + "/"
     return this.http.delete(url)
   }
+
+  //futures
+  getFutureList(page, size) {
+    const url = "/futures_instrument/?page=" + page + "&size=" + size
+    return this.http.get(url)
+  }
+
+  getFuture(id) {
+    const url = "/futures_instrument/" + id + "/"
+    return this.http.get(url)
+  }
+
+  addFuture(parmas) {
+    const url = "/futures_instrument/"
+    return this.http.post(url, parmas)
+  }
+
+  updateFuture(id, parmas) {
+    const url = "/futures_instrument/" + id + "/"
+    return this.http.put(url, parmas)
+  }
+
+  deleteFuture(id) {
+    const url = "/futures_instrument/" + id + "/"
+    return this.http.delete(url)
+  }
+
+  //server_info
+  getServerInfoList(page, size) {
+    const url = "/server_info/?page=" + page + "&size=" + size
+    return this.http.get(url)
+  }
+
+  getServerInfo(id) {
+    const url = "/server_info/" + id + "/"
+    return this.http.get(url)
+  }
+
+  addServerInfo(parmas) {
+    const url = "/server_info/"
+    return this.http.post(url, parmas)
+  }
+
+  updateServerInfo(id, parmas) {
+    const url = "/server_info/" + id + "/"
+    return this.http.put(url, parmas)
+  }
+
+  deleteYServerInfo(id) {
+    const url = "/server_info/" + id + "/"
+    return this.http.delete(url)
+  }
+
+  //server_user
+  getServerUserList(page, size) {
+    const url = "/server_user/?page=" + page + "&size=" + size
+    return this.http.get(url)
+  }
+
+  getServerUserList(id) {
+    const url = "/server_user/" + id + "/"
+    return this.http.get(url)
+  }
+
+  addServerUser(parmas) {
+    const url = "/server_user/"
+    return this.http.post(url, parmas)
+  }
+
+  updateServerUser(id, parmas) {
+    const url = "/server_user/" + id + "/"
+    return this.http.put(url, parmas)
+  }
+
+  deleteServerUser(id) {
+    const url = "/server_user/" + id + "/"
+    return this.http.delete(url)
+  }
+
+  //Share
+  getShareList(page, size) {
+    const url = "/share/?page=" + page + "&size=" + size
+    return this.http.get(url)
+  }
+
+  getShare(id) {
+    const url = "/share/" + id + "/"
+    return this.http.get(url)
+  }
+
+  addShare(parmas) {
+    const url = "/share/"
+    return this.http.post(url, parmas)
+  }
+
+  updateShare(id, parmas) {
+    const url = "/share/" + id + "/"
+    return this.http.put(url, parmas)
+  }
+
+  deleteShare(id) {
+    const url = "/share/" + id + "/"
+    return this.http.delete(url)
+  }
+
+  //share_options
+  getShareOptionsList(page, size) {
+    const url = "/share_option/?page=" + page + "&size=" + size
+    return this.http.get(url)
+  }
+
+  getShareOptions(id) {
+    const url = "/share_option/" + id + "/"
+    return this.http.get(url)
+  }
+
+  addShareOptions(parmas) {
+    const url = "/share_option/"
+    return this.http.post(url, parmas)
+  }
+
+  updateShareOptions(id, parmas) {
+    const url = "/share_option/" + id + "/"
+    return this.http.put(url, parmas)
+  }
+
+  deleteShareOptions(id) {
+    const url = "/share_option/" + id + "/"
+    return this.http.delete(url)
+  }
+  
 }
 
 export default new Http()
