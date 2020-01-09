@@ -2,8 +2,8 @@ import axios from "axios"
 import auth from "./auth"
 //import { router } from "../routers";
 
-//const BASE_URL = 'http://home.biwei-ningbo.com:10000'
-const BASE_URL = 'http://127.0.0.1/api'
+const BASE_URL = 'http://home.biwei-ningbo.com:10000/api'
+//const BASE_URL = 'http://127.0.0.1/api'
 
 class Http {
   constructor() {
@@ -22,17 +22,17 @@ class Http {
     })
 
     // 响应之后的拦截器
-    this.http.interceptors.response.use(response => {
-        if (response.status === 200) {
-          return response;
-        } else {
-          Promise.reject();
-        }
-      },
-      error => {
-        console.log(error);
-        return Promise.reject();
-      })
+    // this.http.interceptors.response.use(response => {
+    //     if (response.status === 200) {
+    //       return response;
+    //     } else {
+    //       Promise.reject();
+    //     }
+    //   },
+    //   error => {
+    //     console.log(error);
+    //     return Promise.reject();
+    //   })
 
   }
 

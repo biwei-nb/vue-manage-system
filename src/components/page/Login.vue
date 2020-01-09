@@ -57,31 +57,34 @@ export default {
 
             this.$refs.login.validate(valid => {
                 if (valid) {
-                    alert('submit!');
+                    //alert(valid);
+                    this.$load.show();
+                    this.$http
+                        .login(params)
+                        .then(res => {
+                            console.log("===========>1")
+                            console.log(data)
+                            this.$message.success('登录成功');
+                            const data = res.data;
+                            const token = data.token;
+                            const user = data.user;
+                            this.$auth.setUserToken(user, token);
+                            this.$router.push('/');
+                            this.$load.hide();
+                        })
+                        .then(err => {
+                            // console.log(111111111)
+                            console.log("===========>2")
+                            console.log(data)
+                            this.err_message = err.data.message;
+                            console.log(err.data.message);
+                            this.$load.hide();
+                        });
                 } else {
                     console.log('error submit!!');
                     return false;
                 }
             });
-
-            this.$load.show();
-            this.$http
-                .login(params)
-                .then(res => {
-                    this.$message.success('登录成功');
-                    const data = res.data;
-                    const token = data.token;
-                    const user = data.user;
-                    this.$auth.setUserToken(user, token);
-                    this.$router.push('/');
-                    this.$load.hide();
-                })
-                .then(err => {
-                    // console.log(111111111)
-                    this.err_message = err.data.message;
-                    console.log(err.data.message);
-                    this.$load.hide();
-                });
         }
     }
 };
