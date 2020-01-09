@@ -41,8 +41,8 @@ class Http {
     return this.http.post(url, params)
   }
 
-  getExchangeList() {
-    const url = "/exchange_info/"
+  getExchangeList(page, size) {
+    const url = "/exchange_info/?page=" + page + "&size=" + size
     return this.http.get(url)
   }
 

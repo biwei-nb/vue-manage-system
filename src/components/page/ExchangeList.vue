@@ -128,9 +128,9 @@ export default {
         // 获取 easy-mock 的模拟数据
         getData() {
             this.$http
-                .getExchangeList()
+                .getExchangeList(this.pageIndex, this.pageSize)
                 .then(res => {
-                    console.log(res);
+                    //console.log(res);
                     this.tableData = res.data.results;
                     this.pageTotal = res.data.count;
                 })
@@ -145,8 +145,8 @@ export default {
         },
         // 触发搜索按钮
         handleSearch() {
-            this.$set(this.query, 'pageIndex', 1);
-            this.getData();
+            //this.$set(this.query, 'pageIndex', 1);
+            //this.getData();
         },
         // 删除操作
         handleDelete(index, row) {
@@ -155,12 +155,8 @@ export default {
                 type: 'warning'
             })
                 .then(() => {
-                    //console.log(index)
-                    //console.log(row.nid)
                     this.$http.deleteExchange(row.nid);
-                    //this.getData();
                     this.$message.success('删除成功');
-
                     this.tableData.splice(index, 1);
                 })
                 .catch(() => {});
@@ -212,14 +208,16 @@ export default {
         // 分页导航
         handleCurrentChange(val) {
             //this.$set(this.query, 'pageIndex', val);
-            console.log('handlePageChange');
-            console.log(val);
-            //this.getData();
+            //console.log('handlePageChange');
+            //console.log(val);
+            this.pageIndex = val;
+            this.getData();
         },
         handleSizeChange(val) {
             this.pageSize = val;
-            console.log('handlePageChange');
-            console.log(val);
+            //console.log('handlePageChange');
+            //console.log(val);
+            this.getData();
         },
         addExchange() {
             //console.log("addExchange");
