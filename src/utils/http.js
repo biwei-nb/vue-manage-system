@@ -42,10 +42,29 @@ class Http {
   }
 
   getExchangeList() {
-    const url = "/exchange/"
+    const url = "/exchange_info/"
     return this.http.get(url)
   }
-  
+
+  getExchange(id) {
+    const url = "/exchange_info/" + id + "/"
+    return this.http.get(url)
+  }
+
+  addExchange(parmas) {
+    const url = "/exchange_info/"
+    return this.http.post(url, parmas)
+  }
+
+  updateExchange(id, parmas) {
+    const url = "/exchange_info/" + id + "/"
+    return this.http.put(url, parmas)
+  }
+
+  deleteExchange(id) {
+    const url = "/exchange_info/" + id + "/"
+    return this.http.delete(url)
+  }
 
 }
 
