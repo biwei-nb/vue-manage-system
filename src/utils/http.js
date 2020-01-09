@@ -41,6 +41,11 @@ class Http {
     return this.http.post(url, params)
   }
 
+  getExchangeList() {
+    const url = "/exchange/"
+    return this.http.get(url)
+  }
+  
 
 }
 
