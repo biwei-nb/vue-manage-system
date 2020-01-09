@@ -9,7 +9,7 @@
         </div>
         <div class="container">
             <div class="handle-box">
-                <el-input v-model="query.name" placeholder="用户名" class="handle-input mr10"></el-input>
+                <el-input v-model="query.name" placeholder="APPID" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
                 <el-button type="primary" icon="el-icon-plus" @click="addExchange">增加</el-button>
             </div>
@@ -29,10 +29,11 @@
                     align="center"
                     :index="indexMethod"
                 ></el-table-column>
-                <el-table-column prop="name" label="交易所名称"></el-table-column>
-                <el-table-column prop="abbre" label="交易所简称"></el-table-column>
+                <el-table-column prop="name" label="名字"></el-table-column>
+                <el-table-column prop="app_id" label="APP ID"></el-table-column>
+                <el-table-column prop="app_auth" label="APP Auth"></el-table-column>
 
-                <!-- <el-table-column prop="create_time" label="创建时间"></el-table-column> -->
+                <el-table-column prop="update_time" label="更新时间"></el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
                         <el-button

@@ -59,13 +59,26 @@
                 <div class="pagination">
                     <el-pagination
                         background
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :current-page.sync="pageIndex"
+                        :page-sizes="[5, 10, 20, 50]"
+                        :page-size="pageSize"
+                        layout="total, sizes, prev, pager, next"
+                        :total="pageTotal"
+                    ></el-pagination>
+                </div>
+
+                <!-- <div class="pagination">
+                    <el-pagination
+                        background
                         layout="total, prev, pager, next"
-                        :current-page="query.pageIndex"
-                        :page-size="query.pageSize"
+                        :current-page="pageIndex"
+                        :page-size="pageSize"
                         :total="pageTotal"
                         @current-change="handlePageChange"
                     ></el-pagination>
-                </div>
+                </div>-->
             </div>
         </div>
 
@@ -94,15 +107,16 @@ export default {
     data() {
         return {
             query: {
-                name: '',
-                pageIndex: 1,
-                pageSize: 10
+                name: ''
             },
+
             tableData: [],
             multipleSelection: [],
             delList: [],
             editVisible: false,
             pageTotal: 0,
+            pageIndex: 1,
+            pageSize: 10,
             form: {},
             idx: -1,
             id: -1
@@ -118,7 +132,8 @@ export default {
                 .getExchangeList()
                 .then(res => {
                     console.log(res);
-                    this.tableData = res.data;
+                    this.tableData = res.data.results;
+                    this.pageTotal = res.data.count;
                 })
                 .catch(err => {
                     console.log(err);
@@ -146,7 +161,7 @@ export default {
                     this.$http.deleteExchange(row.nid);
                     //this.getData();
                     this.$message.success('删除成功');
-                    
+
                     this.tableData.splice(index, 1);
                 })
                 .catch(() => {});
@@ -196,9 +211,16 @@ export default {
             }
         },
         // 分页导航
-        handlePageChange(val) {
-            this.$set(this.query, 'pageIndex', val);
-            this.getData();
+        handleCurrentChange(val) {
+            //this.$set(this.query, 'pageIndex', val);
+            console.log('handlePageChange');
+            console.log(val);
+            //this.getData();
+        },
+        handleSizeChange(val) {
+            this.pageSize = val;
+            console.log('handlePageChange');
+            console.log(val);
         },
         addExchange() {
             //console.log("addExchange");
