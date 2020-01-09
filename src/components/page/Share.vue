@@ -1,4 +1,4 @@
-<template>
+<<template>
     <div>
         <div class="crumbs">
             <el-breadcrumb separator="/">
@@ -31,8 +31,12 @@
                 ></el-table-column>
                 <el-table-column prop="name" label="股票名字"></el-table-column>
                 <el-table-column prop="exchange_number" label="股票代码"></el-table-column>
-                <el-table-column prop="monitor_flag" label="监控标志"></el-table-column>
-                <el-table-column prop="exchange.name" label="交易所"></el-table-column>
+                <el-table-column label="监控标志">
+                    <template slot-scope="scope">{{ scope.row.name }}</template>
+                </el-table-column>
+                <el-table-column label="交易所">
+                    <template slot-scope="scope">{{ scope.row.exchange_number }}</template>
+                </el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
                         <el-button
