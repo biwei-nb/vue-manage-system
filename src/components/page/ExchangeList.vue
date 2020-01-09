@@ -9,7 +9,7 @@
         </div>
         <div class="container">
             <div class="handle-box">
-                <el-input v-model="query.name" placeholder="用户名" class="handle-input mr10"></el-input>
+                <el-input v-model="query.name" placeholder="交易所名称" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
                 <el-button type="primary" icon="el-icon-plus" @click="addExchange">增加</el-button>
             </div>
@@ -94,7 +94,6 @@ export default {
     data() {
         return {
             query: {
-                abbre: '',
                 name: '',
                 pageIndex: 1,
                 pageSize: 10
