@@ -152,7 +152,7 @@ export default {
                 // }
                 {
                     icon: 'el-icon-lx-calendar',
-                    index: '3',
+                    index: '8',
                     title: '设置 Settings',
                     subs: [
                         {
