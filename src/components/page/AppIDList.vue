@@ -3,15 +3,15 @@
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
-                    <i class="el-icon-lx-cascades"></i> APPID设置
+                    <i class="el-icon-lx-cascades"></i> APP ID设置
                 </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
             <div class="handle-box">
-                <el-input v-model="query.name" placeholder="APPID" class="handle-input mr10"></el-input>
+                <el-input v-model="query.name" placeholder="APP ID" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
-                <el-button type="primary" icon="el-icon-plus" @click="addExchange">增加</el-button>
+                <el-button type="primary" icon="el-icon-plus" @click="addAppid">增加</el-button>
             </div>
             <el-table
                 :data="tableData"
@@ -30,8 +30,8 @@
                     :index="indexMethod"
                 ></el-table-column>
                 <el-table-column prop="name" label="名字"></el-table-column>
-                <el-table-column prop="app_id" label="APP ID"></el-table-column>
-                <el-table-column prop="app_auth" label="APP Auth"></el-table-column>
+                <el-table-column prop="app_id" label="App ID"></el-table-column>
+                <el-table-column prop="app_auth" label="App Auth"></el-table-column>
 
                 <el-table-column prop="update_time" label="更新时间"></el-table-column>
                 <el-table-column label="操作" width="180" align="center">
@@ -60,24 +60,40 @@
                 <div class="pagination">
                     <el-pagination
                         background
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :current-page.sync="pageIndex"
+                        :page-sizes="[5, 10, 20, 50]"
+                        :page-size="pageSize"
+                        layout="total, sizes, prev, pager, next"
+                        :total="pageTotal"
+                    ></el-pagination>
+                </div>
+
+                <!-- <div class="pagination">
+                    <el-pagination
+                        background
                         layout="total, prev, pager, next"
-                        :current-page="query.pageIndex"
-                        :page-size="query.pageSize"
+                        :current-page="pageIndex"
+                        :page-size="pageSize"
                         :total="pageTotal"
                         @current-change="handlePageChange"
                     ></el-pagination>
-                </div>
+                </div>-->
             </div>
         </div>
 
         <!-- 编辑弹出框 -->
         <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
             <el-form ref="form" :model="form" label-width="90px">
-                <el-form-item label="交易所名称">
+                <el-form-item label="名字">
                     <el-input v-model="form.name"></el-input>
                 </el-form-item>
-                <el-form-item label="交易所简称">
-                    <el-input v-model="form.abbre"></el-input>
+                <el-form-item label="App ID">
+                    <el-input v-model="form.app_id"></el-input>
+                </el-form-item>
+                <el-form-item label="App Auth">
+                    <el-input v-model="form.app_auth"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -89,22 +105,21 @@
 </template>
 
 <script>
-import { GMTToStr } from '../../utils/dataTransform';
 export default {
     name: 'basetable',
     data() {
         return {
             query: {
-                abbre: '',
-                name: '',
-                pageIndex: 1,
-                pageSize: 10
+                name: ''
             },
+
             tableData: [],
             multipleSelection: [],
             delList: [],
             editVisible: false,
             pageTotal: 0,
+            pageIndex: 1,
+            pageSize: 10,
             form: {},
             idx: -1,
             id: -1
@@ -117,10 +132,11 @@ export default {
         // 获取 easy-mock 的模拟数据
         getData() {
             this.$http
-                .getExchangeList()
+                .getAppIDList(this.pageIndex, this.pageSize)
                 .then(res => {
-                    console.log(res);
-                    this.tableData = res.data;
+                    //console.log(res);
+                    this.tableData = res.data.results;
+                    this.pageTotal = res.data.count;
                 })
                 .catch(err => {
                     console.log(err);
@@ -133,8 +149,8 @@ export default {
         },
         // 触发搜索按钮
         handleSearch() {
-            this.$set(this.query, 'pageIndex', 1);
-            this.getData();
+            //this.$set(this.query, 'pageIndex', 1);
+            //this.getData();
         },
         // 删除操作
         handleDelete(index, row) {
@@ -143,12 +159,8 @@ export default {
                 type: 'warning'
             })
                 .then(() => {
-                    //console.log(index)
-                    //console.log(row.nid)
-                    this.$http.deleteExchange(row.nid);
-                    //this.getData();
+                    this.$http.deleteAppID(row.nid);
                     this.$message.success('删除成功');
-
                     this.tableData.splice(index, 1);
                 })
                 .catch(() => {});
@@ -180,7 +192,7 @@ export default {
                 //console.log('xiugai');
                 //console.log(this.idx, this.form)
                 this.$http
-                    .updateExchange(this.form.nid, this.form)
+                    .updateAppID(this.form.nid, this.form)
                     .then(res => {
                         this.getData();
                         this.$message.success(`修改第 ${this.idx + 1} 行成功`);
@@ -189,7 +201,7 @@ export default {
             } else {
                 //console.log('chuangjian');
                 this.$http
-                    .addExchange(this.form)
+                    .addAppID(this.form)
                     .then(res => {
                         this.getData();
                         this.$message.success('创建成功');
@@ -198,17 +210,21 @@ export default {
             }
         },
         // 分页导航
-        handlePageChange(val) {
-            this.$set(this.query, 'pageIndex', val);
+        handleCurrentChange(val) {
+            this.pageIndex = val;
             this.getData();
         },
-        addExchange() {
+        handleSizeChange(val) {
+            this.pageSize = val;
+            this.getData();
+        },
+        addAppid() {
             //console.log("addExchange");
             this.editVisible = true;
             this.form = {};
         },
         indexMethod(index) {
-            return index + 1;
+            return index + 1 + (this.pageIndex - 1) * this.pageSize;
         }
     }
 };

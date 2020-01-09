@@ -106,7 +106,52 @@ export default new Router({
                 {
                     path: '/exchange',
                     component: () => import(/* webpackChunkName: "403" */ '../components/page/ExchangeList.vue'),
-                    meta: { title: '交易所列表' }
+                    meta: { title: 'Exchange列表' }
+                },
+                {
+                    path: '/appid',
+                    component: () => import(/* webpackChunkName: "403" */ '../components/page/AppIDList.vue'),
+                    meta: { title: 'APP ID列表' }
+                },
+                {
+                    path: '/server_attr',
+                    component: () => import(/* webpackChunkName: "403" */ '../components/page/ServerAttr.vue'),
+                    meta: { title: 'Server Attr列表' }
+                },
+                {
+                    path: '/server_type',
+                    component: () => import(/* webpackChunkName: "403" */ '../components/page/ServerType.vue'),
+                    meta: { title: 'Server Type列表' }
+                },
+                {
+                    path: '/year_month',
+                    component: () => import(/* webpackChunkName: "403" */ '../components/page/YearAndMonth.vue'),
+                    meta: { title: 'YearAndMonth列表' }
+                },
+                {
+                    path: '/futures',
+                    component: () => import(/* webpackChunkName: "403" */ '../components/page/Futures.vue'),
+                    meta: { title: 'Futures列表' }
+                },
+                {
+                    path: '/server_info',
+                    component: () => import(/* webpackChunkName: "403" */ '../components/page/ServerInfo.vue'),
+                    meta: { title: 'ServerInfo列表' }
+                },
+                {
+                    path: '/server_user',
+                    component: () => import(/* webpackChunkName: "403" */ '../components/page/ServerUser.vue'),
+                    meta: { title: 'ServerUser列表' }
+                },
+                {
+                    path: '/share',
+                    component: () => import(/* webpackChunkName: "403" */ '../components/page/Share.vue'),
+                    meta: { title: 'Share列表' }
+                },
+                {
+                    path: '/share_options',
+                    component: () => import(/* webpackChunkName: "403" */ '../components/page/ShareOptions.vue'),
+                    meta: { title: 'ShareOptions列表' }
                 },
             ]
         },

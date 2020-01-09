@@ -61,45 +61,45 @@ export default {
                     index: 'dashboard',
                     title: '系统首页'
                 },
-                {
-                    icon: 'el-icon-lx-cascades',
-                    index: 'table',
-                    title: '基础表格'
-                },
-                {
-                    icon: 'el-icon-lx-copy',
-                    index: 'tabs',
-                    title: 'tab选项卡'
-                },
-                {
-                    icon: 'el-icon-lx-calendar',
-                    index: '3',
-                    title: '表单相关',
-                    subs: [
-                        {
-                            index: 'form',
-                            title: '基本表单'
-                        },
-                        {
-                            index: '3-2',
-                            title: '三级菜单',
-                            subs: [
-                                {
-                                    index: 'editor',
-                                    title: '富文本编辑器'
-                                },
-                                {
-                                    index: 'markdown',
-                                    title: 'markdown编辑器'
-                                }
-                            ]
-                        },
-                        {
-                            index: 'upload',
-                            title: '文件上传'
-                        }
-                    ]
-                },
+                // {
+                //     icon: 'el-icon-lx-cascades',
+                //     index: 'table',
+                //     title: '基础表格'
+                // },
+                // {
+                //     icon: 'el-icon-lx-copy',
+                //     index: 'tabs',
+                //     title: 'tab选项卡'
+                // },
+                // {
+                //     icon: 'el-icon-lx-calendar',
+                //     index: '3',
+                //     title: '表单相关',
+                //     subs: [
+                //         {
+                //             index: 'form',
+                //             title: '基本表单'
+                //         },
+                //         {
+                //             index: '3-2',
+                //             title: '三级菜单',
+                //             subs: [
+                //                 {
+                //                     index: 'editor',
+                //                     title: '富文本编辑器'
+                //                 },
+                //                 {
+                //                     index: 'markdown',
+                //                     title: 'markdown编辑器'
+                //                 }
+                //             ]
+                //         },
+                //         {
+                //             index: 'upload',
+                //             title: '文件上传'
+                //         }
+                //     ]
+                // },
                 {
                     icon: 'el-icon-lx-emoji',
                     index: 'icon',
@@ -110,41 +110,41 @@ export default {
                     index: 'charts',
                     title: 'schart图表'
                 },
-                {
-                    icon: 'el-icon-rank',
-                    index: '6',
-                    title: '拖拽组件',
-                    subs: [
-                        {
-                            index: 'drag',
-                            title: '拖拽列表'
-                        },
-                        {
-                            index: 'dialog',
-                            title: '拖拽弹框'
-                        }
-                    ]
-                },
+                // {
+                //     icon: 'el-icon-rank',
+                //     index: '6',
+                //     title: '拖拽组件',
+                //     subs: [
+                //         {
+                //             index: 'drag',
+                //             title: '拖拽列表'
+                //         },
+                //         {
+                //             index: 'dialog',
+                //             title: '拖拽弹框'
+                //         }
+                //     ]
+                // },
                 // {
                 //     icon: 'el-icon-lx-global',
                 //     index: 'i18n',
                 //     title: '国际化功能'
                 // },
-                {
-                    icon: 'el-icon-lx-warn',
-                    index: '7',
-                    title: '错误处理',
-                    subs: [
-                        // {
-                        //     index: 'permission',
-                        //     title: '权限测试'
-                        // },
-                        {
-                            index: '404',
-                            title: '404页面'
-                        }
-                    ]
-                },
+                // {
+                //     icon: 'el-icon-lx-warn',
+                //     index: '7',
+                //     title: '错误处理',
+                //     subs: [
+                //         // {
+                //         //     index: 'permission',
+                //         //     title: '权限测试'
+                //         // },
+                //         {
+                //             index: '404',
+                //             title: '404页面'
+                //         }
+                //     ]
+                // },
                 // {
                 //     icon: 'el-icon-lx-redpacket_fill',
                 //     index: '/donate',
@@ -153,12 +153,49 @@ export default {
                 {
                     icon: 'el-icon-lx-calendar',
                     index: '8',
-                    title: '设置 Settings',
+                    title: '设置项',
                     subs: [
                         {
-                            index: 'exchange',
-                            title: '交易所设置'
+                            index: 'appid',
+                            title: 'APP ID 设置'
                         },
+                        {
+                            index: 'exchange',
+                            title: 'Exchange 设置'
+                        },
+                        {
+                            index: 'futures',
+                            title: 'Futures 设置'
+                        },
+                        {
+                            index: 'server_attr',
+                            title: 'Server Attr 设置'
+                        },
+                        {
+                            index: 'server_info',
+                            title: 'Server Info 设置'
+                        },
+                        {
+                            index: 'server_type',
+                            title: 'Server Type 设置'
+                        },
+                        {
+                            index: 'server_user',
+                            title: 'Server User 设置'
+                        },
+                        {
+                            index: 'share',
+                            title: 'Share 设置'
+                        },
+                        {
+                            index: 'share_options',
+                            title: 'Share Options 设置'
+                        },
+                        {
+                            index: 'year_month',
+                            title: 'Year Month 设置'
+                        },
+                        
                     ]
                 },
             ]

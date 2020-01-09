@@ -41,6 +41,7 @@ class Http {
     return this.http.post(url, params)
   }
 
+  // Exchange
   getExchangeList(page, size) {
     const url = "/exchange_info/?page=" + page + "&size=" + size
     return this.http.get(url)
@@ -66,6 +67,109 @@ class Http {
     return this.http.delete(url)
   }
 
+  // App ID
+  getAppIDList(page, size) {
+    const url = "/app_id/?page=" + page + "&size=" + size
+    return this.http.get(url)
+  }
+
+  getAppID(id) {
+    const url = "/app_id/" + id + "/"
+    return this.http.get(url)
+  }
+
+  addAppID(parmas) {
+    const url = "/app_id/"
+    return this.http.post(url, parmas)
+  }
+
+  updateAppID(id, parmas) {
+    const url = "/app_id/" + id + "/"
+    return this.http.put(url, parmas)
+  }
+
+  deleteAppID(id) {
+    const url = "/app_id/" + id + "/"
+    return this.http.delete(url)
+  }
+  
+  //server attr
+  getServerAttrList(page, size) {
+    const url = "/server_attr/?page=" + page + "&size=" + size
+    return this.http.get(url)
+  }
+
+  getServerAttr(id) {
+    const url = "/server_attr/" + id + "/"
+    return this.http.get(url)
+  }
+
+  addServerAttr(parmas) {
+    const url = "/server_attr/"
+    return this.http.post(url, parmas)
+  }
+
+  updateServerAttr(id, parmas) {
+    const url = "/server_attr/" + id + "/"
+    return this.http.put(url, parmas)
+  }
+
+  deleteServerAttr(id) {
+    const url = "/server_attr/" + id + "/"
+    return this.http.delete(url)
+  }
+  
+  //server type
+  getServerTypeList(page, size) {
+    const url = "/server_type/?page=" + page + "&size=" + size
+    return this.http.get(url)
+  }
+
+  getServerType(id) {
+    const url = "/server_type/" + id + "/"
+    return this.http.get(url)
+  }
+
+  addServerType(parmas) {
+    const url = "/server_type/"
+    return this.http.post(url, parmas)
+  }
+
+  updateServerType(id, parmas) {
+    const url = "/server_type/" + id + "/"
+    return this.http.put(url, parmas)
+  }
+
+  deleteServerType(id) {
+    const url = "/server_type/" + id + "/"
+    return this.http.delete(url)
+  }
+
+  //year_month
+  getYearMonthList(page, size) {
+    const url = "/year_month/?page=" + page + "&size=" + size
+    return this.http.get(url)
+  }
+
+  getYearMonth(id) {
+    const url = "/year_month/" + id + "/"
+    return this.http.get(url)
+  }
+
+  addYearMonth(parmas) {
+    const url = "/year_month/"
+    return this.http.post(url, parmas)
+  }
+
+  updateYearMonth(id, parmas) {
+    const url = "/year_month/" + id + "/"
+    return this.http.put(url, parmas)
+  }
+
+  deleteYearMonth(id) {
+    const url = "/year_month/" + id + "/"
+    return this.http.delete(url)
+  }
 }
 
 export default new Http()

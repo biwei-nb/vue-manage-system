@@ -3,15 +3,15 @@
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
-                    <i class="el-icon-lx-cascades"></i> Exchange 设置
+                    <i class="el-icon-lx-cascades"></i> Futures设置
                 </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
             <div class="handle-box">
-                <el-input v-model="query.name" placeholder="交易所名称" class="handle-input mr10"></el-input>
+                <el-input v-model="query.name" placeholder="名字" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
-                <el-button type="primary" icon="el-icon-plus" @click="addExchange">增加</el-button>
+                <el-button type="primary" icon="el-icon-plus" @click="addServerAttr">增加</el-button>
             </div>
             <el-table
                 :data="tableData"
@@ -29,11 +29,8 @@
                     align="center"
                     :index="indexMethod"
                 ></el-table-column>
-                <!-- <el-table-column prop="nid" label="序号" align="center" width="55"></el-table-column> -->
-                <el-table-column prop="name" label="交易所名称" align="cente"></el-table-column>
-                <el-table-column prop="abbre" label="交易所简称" align="cente"></el-table-column>
-
-                <!-- <el-table-column prop="create_time" label="创建时间"></el-table-column> -->
+                <el-table-column prop="name" label="名字"></el-table-column>
+                <el-table-column prop="update_time" label="更新时间"></el-table-column> 
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
                         <el-button
@@ -86,11 +83,8 @@
         <!-- 编辑弹出框 -->
         <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
             <el-form ref="form" :model="form" label-width="90px">
-                <el-form-item label="交易所名称">
+                <el-form-item label="名字">
                     <el-input v-model="form.name"></el-input>
-                </el-form-item>
-                <el-form-item label="交易所简称">
-                    <el-input v-model="form.abbre"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -129,7 +123,7 @@ export default {
         // 获取 easy-mock 的模拟数据
         getData() {
             this.$http
-                .getExchangeList(this.pageIndex, this.pageSize)
+                .getServerAttrList(this.pageIndex, this.pageSize)
                 .then(res => {
                     //console.log(res);
                     this.tableData = res.data.results;
@@ -138,11 +132,7 @@ export default {
                 .catch(err => {
                     console.log(err);
                 });
-            // fetchData(this.query).then(res => {
-            //     console.log(res);
-            //     this.tableData = res.list;
-            //     this.pageTotal = res.pageTotal || 50;
-            // });
+            
         },
         // 触发搜索按钮
         handleSearch() {
@@ -156,7 +146,7 @@ export default {
                 type: 'warning'
             })
                 .then(() => {
-                    this.$http.deleteExchange(row.nid);
+                    this.$http.deleteServerAttr(row.nid);
                     this.$message.success('删除成功');
                     this.tableData.splice(index, 1);
                 })
@@ -189,7 +179,7 @@ export default {
                 //console.log('xiugai');
                 //console.log(this.idx, this.form)
                 this.$http
-                    .updateExchange(this.form.nid, this.form)
+                    .updateServerAttr(this.form.nid, this.form)
                     .then(res => {
                         this.getData();
                         this.$message.success(`修改第 ${this.idx + 1} 行成功`);
@@ -198,7 +188,7 @@ export default {
             } else {
                 //console.log('chuangjian');
                 this.$http
-                    .addExchange(this.form)
+                    .addServerAttr(this.form)
                     .then(res => {
                         this.getData();
                         this.$message.success('创建成功');
@@ -208,19 +198,14 @@ export default {
         },
         // 分页导航
         handleCurrentChange(val) {
-            //this.$set(this.query, 'pageIndex', val);
-            //console.log('handlePageChange');
-            //console.log(val);
             this.pageIndex = val;
             this.getData();
         },
         handleSizeChange(val) {
             this.pageSize = val;
-            //console.log('handlePageChange');
-            //console.log(val);
             this.getData();
         },
-        addExchange() {
+        addServerAttr() {
             //console.log("addExchange");
             this.editVisible = true;
             this.form = {};
