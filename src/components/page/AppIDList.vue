@@ -3,7 +3,7 @@
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
-                    <i class="el-icon-lx-cascades"></i> 交易所设置
+                    <i class="el-icon-lx-cascades"></i> APPID设置
                 </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
@@ -147,7 +147,7 @@ export default {
                     this.$http.deleteExchange(row.nid);
                     //this.getData();
                     this.$message.success('删除成功');
-                    
+
                     this.tableData.splice(index, 1);
                 })
                 .catch(() => {});
