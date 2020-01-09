@@ -26,7 +26,6 @@
                 </el-form-item>
                 <div class="login-btn">
                     <el-button type="primary" @click="submitForm()">登录</el-button>
-                    <!-- <p>{{err_message}}</p> -->
                 </div>
             </el-form>
         </div>
@@ -44,8 +43,7 @@ export default {
             rules: {
                 username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
                 password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
-            },
-            err_message: ''
+            }
         };
     },
     methods: {
@@ -62,8 +60,6 @@ export default {
                     this.$http
                         .login(params)
                         .then(res => {
-                            console.log("===========>1")
-                            console.log(data)
                             this.$message.success('登录成功');
                             const data = res.data;
                             const token = data.token;
@@ -72,12 +68,8 @@ export default {
                             this.$router.push('/');
                             this.$load.hide();
                         })
-                        .then(err => {
-                            // console.log(111111111)
-                            console.log("===========>2")
-                            console.log(data)
-                            this.err_message = err.data.message;
-                            console.log(err.data.message);
+                        .catch(err => {
+                            this.$message.error(err.response.data.message);
                             this.$load.hide();
                         });
                 } else {

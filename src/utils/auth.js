@@ -33,7 +33,7 @@ class Auth {
     this.token = null;
     localStorage.removeItem(USER_KEY)
     localStorage.removeItem(TOKEN_KEY)
-    localStorage.removeItem(ROLE)
+    //localStorage.removeItem(ROLE)
   }
 
   get is_authed() {
