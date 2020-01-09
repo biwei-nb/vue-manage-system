@@ -101,7 +101,6 @@
 </template>
 
 <script>
-import { GMTToStr } from '../../utils/dataTransform';
 export default {
     name: 'basetable',
     data() {
