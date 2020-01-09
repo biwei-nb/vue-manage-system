@@ -1,4 +1,4 @@
-<<template>
+<template>
     <div>
         <div class="crumbs">
             <el-breadcrumb separator="/">
@@ -29,13 +29,15 @@
                     align="center"
                     :index="indexMethod"
                 ></el-table-column>
-                <el-table-column prop="name" label="股票名字"></el-table-column>
-                <el-table-column prop="exchange_number" label="股票代码"></el-table-column>
-                <el-table-column label="监控标志">
-                    <template slot-scope="scope">{{ scope.row.name }}</template>
+                <el-table-column prop="name" label="股票名字" align="center"></el-table-column>
+                <el-table-column prop="exchange_number" label="股票代码" align="center"></el-table-column>
+                <el-table-column label="监控标志" align="center">
+                    <template slot-scope="scope1">
+                        <el-checkbox v-model="scope1.row.monitor_flag" label="行情监控" border> </el-checkbox>
+                    </template>
                 </el-table-column>
-                <el-table-column label="交易所">
-                    <template slot-scope="scope">{{ scope.row.exchange_number }}</template>
+                <el-table-column label="交易所" align="center">
+                    <template slot-scope="scope2">{{scope2.row.exchange.name}}</template>
                 </el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
@@ -95,12 +97,12 @@
                 <el-form-item label="股票代码">
                     <el-input v-model="form.exchange_number"></el-input>
                 </el-form-item>
-                <el-form-item label="监控标志">
-                    <el-input v-model="form.exchange_number"></el-input>
+                <!-- <el-form-item label="监控标志">
+                    <el-checkbox v-model="form.monitor_flag"></el-checkbox>
                 </el-form-item>
                 <el-form-item label="交易所">
-                    <el-input v-model="form.exchange_number"></el-input>
-                </el-form-item>
+                    <el-select v-model="form.exchange.nid"></el-select>
+                </el-form-item> -->
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="editVisible = false">取 消</el-button>
