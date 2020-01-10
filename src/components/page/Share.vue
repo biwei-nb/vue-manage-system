@@ -33,7 +33,7 @@
                 <el-table-column prop="exchange_number" label="股票代码" align="center"></el-table-column>
                 <el-table-column label="监控标志" align="center">
                     <template slot-scope="scope1">
-                        <el-checkbox v-model="scope1.row.monitor_flag" label="行情监控" border> </el-checkbox>
+                        <el-checkbox v-model="scope1.row.monitor_flag" label="行情监控" border></el-checkbox>
                     </template>
                 </el-table-column>
                 <el-table-column label="交易所" align="center">
@@ -97,12 +97,19 @@
                 <el-form-item label="股票代码">
                     <el-input v-model="form.exchange_number"></el-input>
                 </el-form-item>
-                <!-- <el-form-item label="监控标志">
-                    <el-checkbox v-model="form.monitor_flag"></el-checkbox>
+                <el-form-item label="监控标志">
+                    <el-checkbox v-model="form.monitor_flag" label="行情监控" border></el-checkbox>
                 </el-form-item>
                 <el-form-item label="交易所">
-                    <el-select v-model="form.exchange.nid"></el-select>
-                </el-form-item> -->
+                    <el-select v-model="form.exchange" value-key="nid">
+                        <el-option
+                            v-for="item in ExchangeOptions"
+                            :key="item.nid"
+                            :label="item.name"
+                            :value="item"
+                        ></el-option>
+                    </el-select>
+                </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="editVisible = false">取 消</el-button>
@@ -127,10 +134,11 @@ export default {
             editVisible: false,
             pageTotal: 0,
             pageIndex: 1,
-            pageSize: 100,
+            pageSize: 50,
             form: {},
             idx: -1,
-            id: -1
+            id: -1,
+            ExchangeOptions: []
         };
     },
     created() {
@@ -142,7 +150,7 @@ export default {
             this.$http
                 .getShareList(this.pageIndex, this.pageSize)
                 .then(res => {
-                    console.log(res);
+                    //console.log(res);
                     this.tableData = res.data.results;
                     this.pageTotal = res.data.count;
                 })
@@ -184,16 +192,20 @@ export default {
         },
         // 编辑操作
         handleEdit(index, row) {
+            this.getExchangeToOptions();
             this.idx = index;
             this.form = JSON.parse(JSON.stringify(row));
+            //this.form.exchange_id = this.form.exchange.nid;
+
+            //console.log(this.form.exchange);
             this.editVisible = true;
         },
         // 保存编辑
         saveEdit() {
+            console.log(this.form);
             this.editVisible = false;
             if (this.form.nid) {
                 //console.log('xiugai');
-                //console.log(this.idx, this.form)
                 this.$http
                     .updateShare(this.form.nid, this.form)
                     .then(res => {
@@ -221,13 +233,27 @@ export default {
             this.pageSize = val;
             this.getData();
         },
+        // 增加操作
         addShare() {
             //console.log("addExchange");
+            this.getExchangeToOptions();
             this.editVisible = true;
             this.form = {};
         },
         indexMethod(index) {
             return index + 1 + (this.pageIndex - 1) * this.pageSize;
+        },
+        getExchangeToOptions() {
+            this.$http
+                .getExchangeList(1, 100)
+                .then(res => {
+                    //console.log(res);
+                    this.ExchangeOptions = res.data.results;
+                    //console.log(this.ExchangeOptions);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
         }
     }
 };
