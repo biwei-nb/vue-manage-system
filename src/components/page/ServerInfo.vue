@@ -11,7 +11,7 @@
             <div class="handle-box">
                 <el-input v-model="query.name" placeholder="名字" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
-                <el-button type="primary" icon="el-icon-plus" @click="addServerAttr">增加</el-button>
+                <el-button type="primary" icon="el-icon-plus" @click="addServerInfo">增加</el-button>
             </div>
             <el-table
                 :data="tableData"
@@ -30,7 +30,14 @@
                     :index="indexMethod"
                 ></el-table-column>
                 <el-table-column prop="name" label="名字"></el-table-column>
-                <el-table-column prop="update_time" label="更新时间"></el-table-column> 
+                <el-table-column label="交易属性">
+                    <template slot-scope="scope1">{{scope1.row.server_type.name}}</template>
+                </el-table-column>
+                <el-table-column label="交易类型">
+                    <template slot-scope="scope2">{{scope2.row.server_attr.name}}</template>
+                </el-table-column>
+
+                <el-table-column prop="update_time" label="更新时间"></el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
                         <el-button
@@ -81,10 +88,48 @@
         </div>
 
         <!-- 编辑弹出框 -->
-        <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
-            <el-form ref="form" :model="form" label-width="90px">
+        <el-dialog title="编辑" :visible.sync="editVisible" width="50%">
+            <el-form ref="form" :model="form" label-width="120px">
                 <el-form-item label="名字">
                     <el-input v-model="form.name"></el-input>
+                </el-form-item>
+                <el-form-item label="Broker ID">
+                    <el-input v-model="form.brokerid"></el-input>
+                </el-form-item>
+                <el-form-item label="行情服务器IP">
+                    <el-input v-model="form.md_ip"></el-input>
+                </el-form-item>
+                <el-form-item label="行情服务器端口">
+                    <el-input v-model="form.md_port"></el-input>
+                </el-form-item>
+                <el-form-item label="交易服务器IP">
+                    <el-input v-model="form.td_ip"></el-input>
+                </el-form-item>
+                <el-form-item label="交易服务器端口">
+                    <el-input v-model="form.td_port"></el-input>
+                </el-form-item>
+                <el-form-item label="描述">
+                    <el-input v-model="form.desc"></el-input>
+                </el-form-item>
+                <el-form-item label="交易属性">
+                    <el-select v-model="form.server_attr" value-key="nid">
+                        <el-option
+                            v-for="attr_item in ServerAttrList"
+                            :key="attr_item.nid"
+                            :label="attr_item.name"
+                            :value="attr_item"
+                        ></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="交易类型">
+                    <el-select v-model="form.server_type" value-key="nid">
+                        <el-option
+                            v-for="type_item in ServerTypeList"
+                            :key="type_item.nid"
+                            :label="type_item.name"
+                            :value="type_item"
+                        ></el-option>
+                    </el-select>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -113,7 +158,9 @@ export default {
             pageSize: 10,
             form: {},
             idx: -1,
-            id: -1
+            id: -1,
+            ServerTypeList: [],
+            ServerAttrList: []
         };
     },
     created() {
@@ -123,7 +170,7 @@ export default {
         // 获取 easy-mock 的模拟数据
         getData() {
             this.$http
-                .getServerAttrList(this.pageIndex, this.pageSize)
+                .getServerInfoList(this.pageIndex, this.pageSize)
                 .then(res => {
                     //console.log(res);
                     this.tableData = res.data.results;
@@ -132,7 +179,6 @@ export default {
                 .catch(err => {
                     console.log(err);
                 });
-            
         },
         // 触发搜索按钮
         handleSearch() {
@@ -146,7 +192,7 @@ export default {
                 type: 'warning'
             })
                 .then(() => {
-                    this.$http.deleteServerAttr(row.nid);
+                    this.$http.deleteServerInfo(row.nid);
                     this.$message.success('删除成功');
                     this.tableData.splice(index, 1);
                 })
@@ -168,6 +214,8 @@ export default {
         },
         // 编辑操作
         handleEdit(index, row) {
+            this.getTypeList();
+            this.getAttrList();
             this.idx = index;
             this.form = JSON.parse(JSON.stringify(row));
             this.editVisible = true;
@@ -175,20 +223,28 @@ export default {
         // 保存编辑
         saveEdit() {
             this.editVisible = false;
+            const parse = {
+                name: this.form.name,
+                brokerid: this.form.brokerid,
+                md_ip: this.form.md_ip,
+                md_port: this.form.md_port,
+                td_ip: this.form.td_ip,
+                td_port: this.form.td_port,
+                desc: this.form.desc,
+                server_attr_id: this.form.server_attr.nid,
+                server_type_id: this.form.server_type.nid
+            };
             if (this.form.nid) {
-                //console.log('xiugai');
-                //console.log(this.idx, this.form)
                 this.$http
-                    .updateServerAttr(this.form.nid, this.form)
+                    .updateServerInfo(this.form.nid, parse)
                     .then(res => {
                         this.getData();
                         this.$message.success(`修改第 ${this.idx + 1} 行成功`);
                     })
                     .catch(err => {});
             } else {
-                //console.log('chuangjian');
                 this.$http
-                    .addServerAttr(this.form)
+                    .addServerInfo(parse)
                     .then(res => {
                         this.getData();
                         this.$message.success('创建成功');
@@ -205,13 +261,42 @@ export default {
             this.pageSize = val;
             this.getData();
         },
-        addServerAttr() {
+        // 增加
+        addServerInfo() {
             //console.log("addExchange");
+            this.getTypeList();
+            this.getAttrList();
             this.editVisible = true;
             this.form = {};
         },
+        // 索引相关
         indexMethod(index) {
-            return index + 1 + (this.pageIndex-1) * this.pageSize;
+            return index + 1 + (this.pageIndex - 1) * this.pageSize;
+        },
+
+        getTypeList() {
+            this.$http
+                .getServerTypeList(1, 10)
+                .then(res => {
+                    //console.log(res);
+                    this.ServerTypeList = res.data.results;
+                    //console.log(this.ExchangeOptions);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        },
+        getAttrList() {
+            this.$http
+                .getServerAttrList(1, 100)
+                .then(res => {
+                    //console.log(res);
+                    this.ServerAttrList = res.data.results;
+                    //console.log(this.ExchangeOptions);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
         }
     }
 };

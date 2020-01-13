@@ -11,7 +11,7 @@
             <div class="handle-box">
                 <el-input v-model="query.name" placeholder="名字" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
-                <el-button type="primary" icon="el-icon-plus" @click="addServerType">增加</el-button>
+                <el-button type="primary" icon="el-icon-plus" @click="addShareOptions">增加</el-button>
             </div>
             <el-table
                 :data="tableData"
@@ -30,7 +30,11 @@
                     :index="indexMethod"
                 ></el-table-column>
                 <el-table-column prop="name" label="名字"></el-table-column>
-                <el-table-column prop="update_time" label="更新时间"></el-table-column> 
+                <el-table-column prop="low_number" label="低_序列"></el-table-column>
+                <el-table-column prop="high_number" label="高_序列"></el-table-column>
+                <el-table-column label="交易所">
+                    <template slot-scope="scope">{{scope.row.exchange.name}}</template>
+                </el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
                         <el-button
@@ -123,16 +127,15 @@ export default {
         // 获取 easy-mock 的模拟数据
         getData() {
             this.$http
-                .getServerTypeList(this.pageIndex, this.pageSize)
+                .getShareOptionsList(this.pageIndex, this.pageSize)
                 .then(res => {
-                    //console.log(res);
+                    console.log(res);
                     this.tableData = res.data.results;
                     this.pageTotal = res.data.count;
                 })
                 .catch(err => {
                     console.log(err);
                 });
-            
         },
         // 触发搜索按钮
         handleSearch() {
@@ -146,7 +149,7 @@ export default {
                 type: 'warning'
             })
                 .then(() => {
-                    this.$http.deleteServerType(row.nid);
+                    this.$http.deleteShareOptions(row.nid);
                     this.$message.success('删除成功');
                     this.tableData.splice(index, 1);
                 })
@@ -179,7 +182,7 @@ export default {
                 //console.log('xiugai');
                 //console.log(this.idx, this.form)
                 this.$http
-                    .updateServerType(this.form.nid, this.form)
+                    .updateShareOptions(this.form.nid, this.form)
                     .then(res => {
                         this.getData();
                         this.$message.success(`修改第 ${this.idx + 1} 行成功`);
@@ -188,7 +191,7 @@ export default {
             } else {
                 //console.log('chuangjian');
                 this.$http
-                    .addServerType(this.form)
+                    .addShareOptions(this.form)
                     .then(res => {
                         this.getData();
                         this.$message.success('创建成功');
@@ -205,13 +208,13 @@ export default {
             this.pageSize = val;
             this.getData();
         },
-        addServerType() {
+        addShareOptions() {
             //console.log("addExchange");
             this.editVisible = true;
             this.form = {};
         },
         indexMethod(index) {
-            return index + 1 + (this.pageIndex-1) * this.pageSize;
+            return index + 1 + (this.pageIndex - 1) * this.pageSize;
         }
     }
 };

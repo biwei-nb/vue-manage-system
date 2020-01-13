@@ -11,7 +11,7 @@
             <div class="handle-box">
                 <el-input v-model="query.name" placeholder="名字" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
-                <el-button type="primary" icon="el-icon-plus" @click="addServerAttr">增加</el-button>
+                <el-button type="primary" icon="el-icon-plus" @click="addServerUser">增加</el-button>
             </div>
             <el-table
                 :data="tableData"
@@ -30,7 +30,15 @@
                     :index="indexMethod"
                 ></el-table-column>
                 <el-table-column prop="name" label="名字"></el-table-column>
-                <el-table-column prop="update_time" label="更新时间"></el-table-column> 
+                <el-table-column prop="user" label="账户"></el-table-column>
+                <el-table-column prop="pwd" label="密码"></el-table-column>
+                <el-table-column label="APP ID">
+                    <template slot-scope="scope1">{{scope1.row.appid.name}}</template>
+                </el-table-column>
+                <el-table-column label="Server">
+                    <template slot-scope="scope2">{{scope2.row.server.name}}</template>
+                </el-table-column>
+
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
                         <el-button
@@ -86,6 +94,33 @@
                 <el-form-item label="名字">
                     <el-input v-model="form.name"></el-input>
                 </el-form-item>
+                <el-form-item label="账户">
+                    <el-input v-model="form.user"></el-input>
+                </el-form-item>
+                <el-form-item label="密码">
+                    <el-input v-model="form.pwd"></el-input>
+                </el-form-item>
+
+                <el-form-item label="APP ID">
+                    <el-select v-model="form.appid" value-key="nid">
+                        <el-option
+                            v-for="appid_item in AppIDList"
+                            :key="appid_item.nid"
+                            :label="appid_item.name"
+                            :value="appid_item"
+                        ></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="Server">
+                    <el-select v-model="form.server" value-key="nid">
+                        <el-option
+                            v-for="server_item in ServerList"
+                            :key="server_item.nid"
+                            :label="server_item.name"
+                            :value="server_item"
+                        ></el-option>
+                    </el-select>
+                </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="editVisible = false">取 消</el-button>
@@ -113,7 +148,9 @@ export default {
             pageSize: 10,
             form: {},
             idx: -1,
-            id: -1
+            id: -1,
+            AppIDList: [],
+            ServerList: []
         };
     },
     created() {
@@ -123,16 +160,15 @@ export default {
         // 获取 easy-mock 的模拟数据
         getData() {
             this.$http
-                .getServerAttrList(this.pageIndex, this.pageSize)
+                .getServerUserList(this.pageIndex, this.pageSize)
                 .then(res => {
-                    //console.log(res);
+                    console.log(res);
                     this.tableData = res.data.results;
                     this.pageTotal = res.data.count;
                 })
                 .catch(err => {
                     console.log(err);
                 });
-            
         },
         // 触发搜索按钮
         handleSearch() {
@@ -146,7 +182,7 @@ export default {
                 type: 'warning'
             })
                 .then(() => {
-                    this.$http.deleteServerAttr(row.nid);
+                    this.$http.deleteServerUser(row.nid);
                     this.$message.success('删除成功');
                     this.tableData.splice(index, 1);
                 })
@@ -170,16 +206,25 @@ export default {
         handleEdit(index, row) {
             this.idx = index;
             this.form = JSON.parse(JSON.stringify(row));
+            this.getServerList();
+            this.getAppidList();
             this.editVisible = true;
         },
         // 保存编辑
         saveEdit() {
             this.editVisible = false;
+            const parse ={
+                    name:this.form.name,
+                    user:this.form.user,
+                    pwd:this.form.pwd,
+                    appid_id:this.form.appid.nid,
+                    server_id:this.form.server.nid
+                }
             if (this.form.nid) {
                 //console.log('xiugai');
                 //console.log(this.idx, this.form)
                 this.$http
-                    .updateServerAttr(this.form.nid, this.form)
+                    .updateServerUser(this.form.nid, parse)
                     .then(res => {
                         this.getData();
                         this.$message.success(`修改第 ${this.idx + 1} 行成功`);
@@ -188,7 +233,7 @@ export default {
             } else {
                 //console.log('chuangjian');
                 this.$http
-                    .addServerAttr(this.form)
+                    .addServerUser(parse)
                     .then(res => {
                         this.getData();
                         this.$message.success('创建成功');
@@ -205,13 +250,39 @@ export default {
             this.pageSize = val;
             this.getData();
         },
-        addServerAttr() {
+        addServerUser() {
             //console.log("addExchange");
             this.editVisible = true;
+            this.getServerList();
+            this.getAppidList();
             this.form = {};
         },
         indexMethod(index) {
-            return index + 1 + (this.pageIndex-1) * this.pageSize;
+            return index + 1 + (this.pageIndex - 1) * this.pageSize;
+        },
+        getServerList() {
+            this.$http
+                .getServerInfoList(1, 100)
+                .then(res => {
+                    //console.log(res);
+                    this.ServerList = res.data.results;
+                    //console.log(this.ExchangeOptions);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        },
+        getAppidList() {
+            this.$http
+                .getAppIDList(1, 100)
+                .then(res => {
+                    //console.log(res);
+                    this.AppIDList = res.data.results;
+                    //console.log(this.ExchangeOptions);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
         }
     }
 };

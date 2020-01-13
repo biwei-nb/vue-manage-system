@@ -207,16 +207,15 @@ export default {
             if (this.form.nid) {
                 console.log('xiugai');
                 const parse = {
-                    "name":this.form.name,
-                    "exchange_number":this.form.exchange_number,
-                    "monitor_flag":this.form.monitor_flag,
-                    "exchange_id":this.form.exchange.nid,
-                }
-                
+                    name: this.form.name,
+                    exchange_number: this.form.exchange_number,
+                    monitor_flag: this.form.monitor_flag,
+                    exchange_id: this.form.exchange.nid
+                };
+
                 this.$http
                     .updateShare(this.form.nid, parse)
                     .then(res => {
-                        
                         this.getData();
                         this.$message.success(`修改第 ${this.idx + 1} 行成功`);
                     })
@@ -224,12 +223,12 @@ export default {
             } else {
                 //console.log('chuangjian');
                 const parse = {
-                    "name":this.form.name,
-                    "exchange_number":this.form.exchange_number,
-                    "monitor_flag":this.form.monitor_flag,
-                    "exchange_id":this.form.exchange.nid,
-                }
-                console.log(parse)
+                    name: this.form.name,
+                    exchange_number: this.form.exchange_number,
+                    monitor_flag: this.form.monitor_flag,
+                    exchange_id: this.form.exchange.nid
+                };
+                //console.log(parse)
                 this.$http
                     .addShare(parse)
                     .then(res => {
