@@ -212,9 +212,11 @@ export default {
                     "monitor_flag":this.form.monitor_flag,
                     "exchange_id":this.form.exchange.nid,
                 }
+                
                 this.$http
-                    .updateShare(this.form.nid, this.form)
+                    .updateShare(this.form.nid, parse)
                     .then(res => {
+                        
                         this.getData();
                         this.$message.success(`修改第 ${this.idx + 1} 行成功`);
                     })
@@ -227,8 +229,9 @@ export default {
                     "monitor_flag":this.form.monitor_flag,
                     "exchange_id":this.form.exchange.nid,
                 }
+                console.log(parse)
                 this.$http
-                    .addShare(this.form)
+                    .addShare(parse)
                     .then(res => {
                         this.getData();
                         this.$message.success('创建成功');
