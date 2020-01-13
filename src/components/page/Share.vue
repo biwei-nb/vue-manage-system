@@ -202,10 +202,16 @@ export default {
         },
         // 保存编辑
         saveEdit() {
-            console.log(this.form);
+            //console.log(this.form);
             this.editVisible = false;
             if (this.form.nid) {
-                //console.log('xiugai');
+                console.log('xiugai');
+                const parse = {
+                    "name":this.form.name,
+                    "exchange_number":this.form.exchange_number,
+                    "monitor_flag":this.form.monitor_flag,
+                    "exchange_id":this.form.exchange.nid,
+                }
                 this.$http
                     .updateShare(this.form.nid, this.form)
                     .then(res => {
@@ -215,6 +221,12 @@ export default {
                     .catch(err => {});
             } else {
                 //console.log('chuangjian');
+                const parse = {
+                    "name":this.form.name,
+                    "exchange_number":this.form.exchange_number,
+                    "monitor_flag":this.form.monitor_flag,
+                    "exchange_id":this.form.exchange.nid,
+                }
                 this.$http
                     .addShare(this.form)
                     .then(res => {
@@ -240,9 +252,11 @@ export default {
             this.editVisible = true;
             this.form = {};
         },
+        // 索引处理
         indexMethod(index) {
             return index + 1 + (this.pageIndex - 1) * this.pageSize;
         },
+        // 获取交易所信息
         getExchangeToOptions() {
             this.$http
                 .getExchangeList(1, 100)
