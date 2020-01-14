@@ -3,7 +3,7 @@
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
-                    <i class="el-icon-lx-cascades"></i> Futures设置
+                    <i class="el-icon-lx-cascades"></i> Server Attr设置
                 </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
@@ -11,7 +11,7 @@
             <div class="handle-box">
                 <el-input v-model="query.name" placeholder="名字" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
-                <el-button type="primary" icon="el-icon-plus" @click="addFuture">增加</el-button>
+                <el-button type="primary" icon="el-icon-plus" @click="addFutureOptions">增加</el-button>
             </div>
             <el-table
                 :data="tableData"
@@ -30,19 +30,10 @@
                     :index="indexMethod"
                 ></el-table-column>
                 <el-table-column prop="name" label="名字"></el-table-column>
-                <el-table-column prop="abbre" label="缩写"></el-table-column>
-                <el-table-column prop="exchange.name" label="交易所"></el-table-column>
-                <el-table-column label="监控标志" align="center">
-                    <template slot-scope="scope1">
-                        <el-checkbox v-model="scope1.row.monitor_flag" label="行情监控" border></el-checkbox>
-                    </template>
-                </el-table-column>
-                <el-table-column label="期权标志" align="center">
-                    <template slot-scope="scope2">
-                        <el-checkbox v-model="scope2.row.options_flag" label="期权标志" border></el-checkbox>
-                    </template>
-                </el-table-column>
-
+                <el-table-column prop="low_price" label="低执行价"></el-table-column>
+                <el-table-column prop="high_price" label="高执行价"></el-table-column>
+                <el-table-column prop="interval_price" label="间隔"></el-table-column>
+                <!-- <el-table-column prop="update_time" label="更新时间"></el-table-column>  -->
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
                         <el-button
@@ -98,24 +89,14 @@
                 <el-form-item label="名字">
                     <el-input v-model="form.name"></el-input>
                 </el-form-item>
-                <el-form-item label="缩写">
-                    <el-input v-model="form.abbre"></el-input>
+                <el-form-item label="低执行价">
+                    <el-input v-model="form.low_price"></el-input>
                 </el-form-item>
-                <el-form-item label="监控标志">
-                    <el-checkbox v-model="form.monitor_flag" label="行情监控" border></el-checkbox>
+                <el-form-item label="高执行价">
+                    <el-input v-model="form.high_price"></el-input>
                 </el-form-item>
-                <el-form-item label="期权标志">
-                    <el-checkbox v-model="form.options_flag" label="期权监控" border></el-checkbox>
-                </el-form-item>
-                <el-form-item label="交易所">
-                    <el-select v-model="form.exchange" value-key="nid">
-                        <el-option
-                            v-for="item in ExchangeOptions"
-                            :key="item.nid"
-                            :label="item.name"
-                            :value="item"
-                        ></el-option>
-                    </el-select>
+                <el-form-item label="间隔">
+                    <el-input v-model="form.interval_price"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -144,10 +125,7 @@ export default {
             pageSize: 10,
             form: {},
             idx: -1,
-            id: -1,
-            ExchangeOptions: [],
-            year_and_month: [],
-            options_info: []
+            id: -1
         };
     },
     created() {
@@ -157,7 +135,7 @@ export default {
         // 获取 easy-mock 的模拟数据
         getData() {
             this.$http
-                .getFutureList(this.pageIndex, this.pageSize)
+                .getFutureOptionsList(this.pageIndex, this.pageSize)
                 .then(res => {
                     console.log(res);
                     this.tableData = res.data.results;
@@ -179,7 +157,7 @@ export default {
                 type: 'warning'
             })
                 .then(() => {
-                    this.$http.deleteFuture(row.nid);
+                    this.$http.deleteFutureOptions(row.nid);
                     this.$message.success('删除成功');
                     this.tableData.splice(index, 1);
                 })
@@ -201,7 +179,6 @@ export default {
         },
         // 编辑操作
         handleEdit(index, row) {
-            this.getExchangeToOptions();
             this.idx = index;
             this.form = JSON.parse(JSON.stringify(row));
             this.editVisible = true;
@@ -213,7 +190,7 @@ export default {
                 //console.log('xiugai');
                 //console.log(this.idx, this.form)
                 this.$http
-                    .updateFuture(this.form.nid, this.form)
+                    .updateFutureOptions(this.form.nid, this.form)
                     .then(res => {
                         this.getData();
                         this.$message.success(`修改第 ${this.idx + 1} 行成功`);
@@ -222,7 +199,7 @@ export default {
             } else {
                 //console.log('chuangjian');
                 this.$http
-                    .addFuture(this.form)
+                    .addFutureOptions(this.form)
                     .then(res => {
                         this.getData();
                         this.$message.success('创建成功');
@@ -239,27 +216,13 @@ export default {
             this.pageSize = val;
             this.getData();
         },
-        addFuture() {
+        addFutureOptions() {
             //console.log("addExchange");
-            this.getExchangeToOptions();
             this.editVisible = true;
             this.form = {};
         },
         indexMethod(index) {
             return index + 1 + (this.pageIndex - 1) * this.pageSize;
-        },
-        // 获取交易所信息
-        getExchangeToOptions() {
-            this.$http
-                .getExchangeList(1, 100)
-                .then(res => {
-                    //console.log(res);
-                    this.ExchangeOptions = res.data.results;
-                    //console.log(this.ExchangeOptions);
-                })
-                .catch(err => {
-                    console.log(err);
-                });
         }
     }
 };

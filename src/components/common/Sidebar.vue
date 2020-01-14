@@ -195,6 +195,10 @@ export default {
                             index: 'year_month',
                             title: 'Year Month 设置'
                         },
+                        {
+                            index: 'future_options',
+                            title: 'Future Options 设置'
+                        },
                         
                     ]
                 },

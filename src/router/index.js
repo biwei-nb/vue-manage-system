@@ -153,6 +153,11 @@ export default new Router({
                     component: () => import(/* webpackChunkName: "403" */ '../components/page/ShareOptions.vue'),
                     meta: { title: 'ShareOptions列表' }
                 },
+                {
+                    path: '/future_options',
+                    component: () => import(/* webpackChunkName: "403" */ '../components/page/FutureOptions.vue'),
+                    meta: { title: 'FutureOptions列表' }
+                },
             ]
         },
         {

@@ -301,6 +301,31 @@ class Http {
     return this.http.delete(url)
   }
   
+   //futureoptinons
+   getFutureOptionsList(page, size) {
+    const url = "/futures_option/?page=" + page + "&size=" + size
+    return this.http.get(url)
+  }
+
+  getFutureOptions(id) {
+    const url = "/futures_option/" + id + "/"
+    return this.http.get(url)
+  }
+
+  addFutureOptions(parmas) {
+    const url = "/futures_option/"
+    return this.http.post(url, parmas)
+  }
+
+  updateFutureOptions(id, parmas) {
+    const url = "/futures_option/" + id + "/"
+    return this.http.put(url, parmas)
+  }
+
+  deleteFutureOptions(id) {
+    const url = "/futures_option/" + id + "/"
+    return this.http.delete(url)
+  }
 }
 
 export default new Http()
